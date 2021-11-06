@@ -1,14 +1,14 @@
 ```@meta
-CurrentModule = Sortmark
+CurrentModule = SortMark
 ```
 
-# Sortmark
+# SortMark
 
-Documentation for [Sortmark](https://github.com/LilithHafner/Sortmark.jl).
+Documentation for [SortMark](https://github.com/LilithHafner/SortMark.jl).
 
 ```@index
 ```
 
 ```@autodocs
-Modules = [Sortmark]
+Modules = [SortMark]
 ```

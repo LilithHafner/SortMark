@@ -1,16 +1,16 @@
-using Sortmark
+using SortMark
 using Documenter
 
-DocMeta.setdocmeta!(Sortmark, :DocTestSetup, :(using Sortmark); recursive=true)
+DocMeta.setdocmeta!(SortMark, :DocTestSetup, :(using SortMark); recursive=true)
 
 makedocs(;
-    modules=[Sortmark],
+    modules=[SortMark],
     authors="Lilith Orion Hafner <60898866+LilithHafner@users.noreply.github.com> and contributors",
-    repo="https://github.com/LilithHafner/Sortmark.jl/blob/{commit}{path}#{line}",
-    sitename="Sortmark.jl",
+    repo="https://github.com/LilithHafner/SortMark.jl/blob/{commit}{path}#{line}",
+    sitename="SortMark.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://LilithHafner.github.io/Sortmark.jl",
+        canonical="https://LilithHafner.github.io/SortMark.jl",
         assets=String[],
     ),
     pages=[
@@ -19,6 +19,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/LilithHafner/Sortmark.jl",
+    repo="github.com/LilithHafner/SortMark.jl",
     devbranch="main",
 )

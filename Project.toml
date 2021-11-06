@@ -1,13 +1,20 @@
-name = "Sortmark"
+name = "SortMark"
 uuid = "15f864f9-903d-48fa-aa6c-47f5a1506de6"
 authors = ["Lilith Orion Hafner <60898866+LilithHafner@users.noreply.github.com> and contributors"]
 version = "0.0.0"
 
+[deps]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+HypothesisTests = "09f84164-cd44-5f33-b23f-e6b0d136a0d5"
+ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+
 [compat]
 julia = "1.6"
 
-[extras]
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+#[extras]
+#Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
-[targets]
-test = ["Test"]
+#[targets]
+#test = ["Test"]

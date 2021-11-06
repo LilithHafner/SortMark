@@ -84,7 +84,7 @@ uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 [[Sockets]]
 uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
 
-[[Sortmark]]
+[[SortMark]]
 path = ".."
 uuid = "15f864f9-903d-48fa-aa6c-47f5a1506de6"
 version = "0.0.0"
