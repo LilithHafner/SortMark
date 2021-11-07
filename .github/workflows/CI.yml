@@ -55,6 +55,6 @@ jobs:
       - run: |
           julia --project=docs -e '
             using Documenter: DocMeta, doctest
-            using Sortmark
-            DocMeta.setdocmeta!(Sortmark, :DocTestSetup, :(using Sortmark); recursive=true)
-            doctest(Sortmark)'
+            using SortMark
+            DocMeta.setdocmeta!(SortMark, :DocTestSetup, :(using SortMark); recursive=true)
+            doctest(SortMark)'
