@@ -311,7 +311,7 @@ Compute comparative stats for the `a`th and `b`th algorithm tested in `df`.
 Returns the 95% confidence interval for the ratio of runtimes a/b for each row.
 """
 function stat!(df, a=1, b=2)
-    df.log_test = [length(eachrow(d)) <= 1 ? missing : OneSampleTTest(d[!,1]-d[!,2]) for d in [log.(frame) for frame in df.data]]
+    df.log_test = [length(eachrow(d)) <= 1 ? missing : OneSampleTTest(d[!,a]-d[!,b]) for d in [log.(frame) for frame in df.data]]
     df.pvalue = [ismissing(t) ? missing : pvalue(t) for t in df.log_test]
     df.point_estimate = [ismissing(t) ? missing : exp(mean(confint(t))) for t in df.log_test]
     df.confint = [ismissing(t) ? missing : exp.(confint(t)) for t in df.log_test]
