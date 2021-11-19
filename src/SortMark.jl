@@ -297,7 +297,7 @@ function reproduce(row=fail, alg=nothing)
     println("sort!($cinput, "* (row.order != Forward ? "order=$(row.order), " : "")*"alg=$alg)")
     output = target!(cinput, alg, row.order)
     test_sorted(output, cinput, input, row.order)
-    test_matched(output, sort!(input, alg=MergeSort))
+    test_matched(output, sort(input, alg=MergeSort))
 
     "no errors"
 end
