@@ -271,7 +271,7 @@ function log_error!(row, exception, alg, input, fail_fast)
         row.errors[alg] = []
     end
     push!(row.errors[alg], entry)
-    if fail_fast
+    if fail_fast || exception isa InterruptException
         global fail = row
         throw(exception)
     end
