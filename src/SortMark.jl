@@ -98,7 +98,7 @@ Benchmarking time
 
 Setting `seconds` or `samples` to `nothing` removes that limit.
 """
-function make_df(algs::AbstractVector{Algorithm} = [MergeSort, QuickSort];
+function make_df(algs::AbstractVector{<:Algorithm} = [MergeSort, QuickSort];
     Types::AbstractVector{<:Type} = BitTypes,
     lens::AbstractVector{<:Integer} = lengths(),
     orders::AbstractVector{<:Ordering} = orders,
