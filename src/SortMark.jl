@@ -65,9 +65,46 @@ const orders = [Forward, Reverse]
 
 
 ##Data frame (this could be much faster if it constructed by column instead of row)
-function make_df(algs = [MergeSort, QuickSort]; Types = BitTypes, lens = lengths(),
-    orders = orders, sources = sources, unstable = [QuickSort],
-    seconds = .005, samples = seconds==nothing ? 1 : nothing)
+"""
+    make_df(algs = [MergeSort, QuickSort]; ...)
+
+Make a dataframe where each row is a sorting task specified by the cartesian product of
+keyword arguments.
+
+# Arguments
+
+- `algs::AbstractVector{<:Base.Sort.Algorithm} = [MergeSort, QuickSort]`:
+    sorting algorithms to test
+- `unstable::AbstractVector{<:Base.Sort.Algorithm} = [QuickSort]`:
+    which of the algorithms are allowed to be unstable
+
+Axes of the cartesian product
+- `Types::AbstractVector{<:Type} = SortMark.BitTypes`:
+    element type
+- `lens::AbstractVector{<:Integer} = SortMark.lengths()`:
+    number of elements to be sorted
+- `orders::AbstractVector{<:Ordering} = SortMark.orders`:
+    orders to sort by
+- `sources::AbstractDict{<:Any, <:Function} = SortMark.sources`:
+    generation procedures to create input data
+
+Benchmarking time
+- `seconds::Union{Real, Nothing} = .005`:
+    maximum benchmarking time for each row. Compute sum(df.seconds) for an estimated
+    benchmarking runtime
+- `samples::Union{Nothing, Integer} = nothing`:
+    maximum number of samples for each row. Compute sum(df.seconds) for an estimated
+    benchmarking runtime
+
+Setting `seconds` or `samples` to `nothing` removes that limit.
+"""
+function make_df(algs::AbstractVector{Algorithm} = [MergeSort, QuickSort];
+    Types::AbstractVector{<:Type} = BitTypes,
+    lens::AbstractVector{<:Integer} = lengths(),
+    orders::AbstractVector{<:Ordering} = orders,
+    sources::AbstractDict{<:Any, <:Function} = sources, unstable = [QuickSort],
+    seconds::Union{Real, Nothing} = .005,
+    samples::Union{Integer, Nothing} = seconds==nothing ? 1 : nothing)
 
     df = DataFrame(ContainerType=Type{<:AbstractVector}[], Type=Type[], len=Int[],
         order=Ordering[], source_key=Symbol[], source=Function[], algs=Vector{<:Algorithm}[], unstable=Vector{<:Algorithm}[],
@@ -90,6 +127,13 @@ end
 
 const PASSED_TESTS = Ref(0)
 
+"""
+    compute!(df::DataFrame; verbose=true, fail_fast=true)
+
+Test and run benchmarks for every row in `df`.
+
+Benchmark results are saved in df.data.
+"""
 function compute!(df::DataFrame; verbose=true, fail_fast=true)
     start_time = time()
     benchmark_start_time = sum(sum(sum.(eachcol(d))) for d in df.data)
@@ -250,6 +294,7 @@ function reproduce(row=fail, alg=nothing)
 
     x, input = first(row.errors[alg])
     cinput = copy(input)
+    println("sort!($cinput, "* (row.order != Forward ? "order=$(row.order), " : "")*"alg=$alg)")
     output = target!(cinput, alg, row.order)
     test_sorted(output, cinput, input, row.order)
     test_matched(output, sort!(input, alg=MergeSort))
@@ -258,6 +303,13 @@ function reproduce(row=fail, alg=nothing)
 end
 
 ##Statistics
+"""
+    function stat!(df, a=1, b=2)
+
+Compute comparative stats for the `a`th and `b`th algorithm tested in `df`.
+
+Returns the 95% confidence interval for the ratio of runtimes a/b for each row.
+"""
 function stat!(df, a=1, b=2)
     df.log_test = [length(eachrow(d)) <= 1 ? missing : OneSampleTTest(d[!,1]-d[!,2]) for d in [log.(frame) for frame in df.data]]
     df.pvalue = [ismissing(t) ? missing : pvalue(t) for t in df.log_test]
