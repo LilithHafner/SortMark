@@ -143,23 +143,17 @@ function compute!(df::DataFrame; verbose=true, fail_fast=true)
     rows = shuffle(eachrow(df))#TODO make this appear immediately
     nominal_runtime = sum([s==nothing ? .001 : s for s in df.seconds])
 
-    if nominal_runtime > 1
-        dt = max(.1, min(1, nominal_runtime/100))
-        message = "$(round(Integer, nominal_runtime))s, Progress: "
-        printstyled(message, "    ", color=:green)
 
-        try
-            @showprogress dt message for row in rows
-                compute!(row, fail_fast)
-            end
-        catch
-            printstyled("\nFailed test set stored as SortMark.fail. Reproduce it's error with reproduce().\n", color=Base.debug_color())
-            rethrow()
-        end
-    else
-        for row in rows
+    dt = max(.1, min(1, nominal_runtime/100))
+    message = "$(round(Integer, nominal_runtime))s, Progress: "
+
+    try
+        @showprogress dt message for row in rows
             compute!(row, fail_fast)
         end
+    catch
+        printstyled("\nFailed test set stored as SortMark.fail. Reproduce it's error with reproduce().\n", color=Base.debug_color())
+        rethrow()
     end
 
 
