@@ -309,6 +309,8 @@ function stat!(df, a=1, b=2)
     df.pvalue = [ismissing(t) ? missing : pvalue(t) for t in df.log_test]
     df.point_estimate = [ismissing(t) ? missing : exp(mean(confint(t))) for t in df.log_test]
     df.confint = [ismissing(t) ? missing : exp.(confint(t)) for t in df.log_test]
+    df.worst_first = sortperm([ismissing(x) ? -1 : first(x) for x in df.confint], rev=true)
+    df.confint[df.worst_first]
 end
 
 end #module
